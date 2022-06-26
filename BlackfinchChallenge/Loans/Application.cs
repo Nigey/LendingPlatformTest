@@ -2,8 +2,11 @@
 {
     public class Application
     {
+        private string _reason;
+
         public decimal Value { get; }
         public decimal AssetValue { get; }
+
         public decimal Ltv
         {
             get
@@ -12,7 +15,16 @@
                 return (diff / Value) * 100;
             }
         }
-        public string Reason { get; private set; }
+
+        public string Reason
+        {
+            get => _reason ?? "N/A";
+            private set
+            {
+                _reason = value;
+            }
+        }
+
         public int CreditScore { get; }
         public bool Successfull { get; private set; }
 
@@ -30,7 +42,7 @@
 
         public void Decline(string reason)
         {
-            Reason = reason;
+            _reason = reason;
             Successfull = false;
         }
     }

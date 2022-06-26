@@ -4,6 +4,7 @@ namespace BlackfinchChallenge.Loans
     public class ApplicationsHandler
     {
         private readonly IApplicationService _applicationService;
+        private readonly Dictionary<decimal, int> ltvToCreditScoreRating;
 
         public ApplicationsHandler(IApplicationService applicationService)
         {
@@ -34,8 +35,31 @@ namespace BlackfinchChallenge.Loans
             }
             else
             {
-                Decline(application, "JUST COS");
-                return;
+                if(application.Ltv < 60)
+                {
+                    if(!ValidateCreditScore(application, 750))
+                    {
+                        return;
+                    }
+                }
+                else if(application.Ltv < 80)
+                {
+                    if (!ValidateCreditScore(application, 800))
+                    {
+                        return;
+                    }
+                }
+                else if (application.Ltv < 90)
+                {
+                    if (!ValidateCreditScore(application, 900))
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    Decline(application, $"Ltv of {application.Ltv} is too high.");
+                }
             }
 
             Accept(application);
@@ -61,6 +85,18 @@ namespace BlackfinchChallenge.Loans
         {
             application.Decline(reason);
             _applicationService.Add(application);
+        }
+
+        private bool ValidateCreditScore(Application application, int requiredCreditScore)
+        {
+            if (application.CreditScore < requiredCreditScore)
+            {
+                Decline(application, $"Credit score of " +
+                    $"{requiredCreditScore} was required, but was " +
+                    $"{application.CreditScore}.");
+                return false;
+            }
+            return true;
         }
     }
 }
