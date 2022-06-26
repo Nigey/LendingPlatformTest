@@ -4,10 +4,14 @@ class Program
 {
     static void Main(string[] args)
     {
-        var application = new Application(500000, 500000, 500);
+        var applicationService = new ApplicationService();
+        var applicationHandler = new ApplicationsHandler(applicationService);
 
-        var applicationHandler = new ApplicationHandler(new ApplicationsService());
+        applicationHandler.Apply(new Application(500000, 500000, 500)); // Should fail
+        applicationHandler.Apply(new Application(500000, 500000, 500)); // Should pass
+        applicationHandler.Apply(new Application(1600000, 500000, 500)); // Should fail
+        applicationHandler.Apply(new Application(1500000, 500000, 500)); // Should pass
 
-        applicationHandler.Apply(application);
+        Console.WriteLine(applicationService.GetAll().First().Successfull);
     }
 }

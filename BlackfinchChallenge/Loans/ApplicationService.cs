@@ -1,11 +1,11 @@
 ﻿using System;
 namespace BlackfinchChallenge.Loans
 {
-    public class ApplicationsService : IApplicationService
+    public class ApplicationService : IApplicationService
     {
         private readonly List<Application> _applications;
 
-        public ApplicationsService()
+        public ApplicationService()
         {
             this._applications = new List<Application>();
         }
