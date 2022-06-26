@@ -14,7 +14,11 @@ namespace BlackfinchChallenge.Loans
         {
             var applications = _applicationService.GetAll();
 
-            
+            for(int i=0; i < applications.Count; i++)
+            {
+                var application = applications.ElementAt(i);
+                Console.WriteLine($"Application {i}: Accepted={application.Successfull}, Reason:{application.Reason}");
+            }
         }
     }
 }

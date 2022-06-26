@@ -14,8 +14,7 @@ namespace BlackfinchChallenge.Loans
         {
             if (!LoanWithinStaticThreshold(application.Value))
             {
-                application.Decline();
-                _applicationService.Add(application);
+                Decline(application, "Was outside of threshold");
                 return;
             }
 
@@ -23,19 +22,19 @@ namespace BlackfinchChallenge.Loans
             {
                 if(application.Ltv > 60)
                 {
-                    Decline(application);
+                    Decline(application, "Was above ltv.");
                     return;
                 }
 
                 if(application.CreditScore < 950)
                 {
-                    Decline(application);
+                    Decline(application, "Credit score too low.");
                     return;
                 }
             }
             else
             {
-                Decline(application);
+                Decline(application, "JUST COS");
                 return;
             }
 
@@ -58,9 +57,9 @@ namespace BlackfinchChallenge.Loans
             _applicationService.Add(application);
         }
 
-        private void Decline(Application application)
+        private void Decline(Application application, string reason)
         {
-            application.Decline();
+            application.Decline(reason);
             _applicationService.Add(application);
         }
     }

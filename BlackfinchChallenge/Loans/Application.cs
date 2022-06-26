@@ -12,7 +12,7 @@
                 return (diff / Value) * 100;
             }
         }
-
+        public string Reason { get; private set; }
         public int CreditScore { get; }
         public bool Successfull { get; private set; }
 
@@ -28,8 +28,9 @@
             Successfull = true;
         }
 
-        public void Decline()
+        public void Decline(string reason)
         {
+            Reason = reason;
             Successfull = false;
         }
     }
