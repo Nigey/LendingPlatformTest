@@ -3,23 +3,23 @@ namespace BlackfinchChallenge.Loans
 {
     public class ApplicationsService : IApplicationService
     {
-        private List<Application> applications;
+        private readonly List<Application> _applications;
 
         public ApplicationsService()
         {
-            this.applications = new List<Application>();
+            this._applications = new List<Application>();
         }
 
         public IReadOnlyCollection<Application> GetAll()
         {
-            return applications;
+            return _applications;
         }
 
         public void Add(Application application)
         {
-            if (!applications.Contains(application))
+            if (!_applications.Contains(application))
             {
-                applications.Add(application);
+                _applications.Add(application);
             }
         }
     }

@@ -3,15 +3,33 @@ namespace BlackfinchChallenge.Loans
 {
     public class ApplicationHandler
     {
-        List<Application> applications;
+        private readonly IApplicationService _applicationService;
 
-        public ApplicationHandler()
+        public ApplicationHandler(IApplicationService applicationService)
         {
+            _applicationService = applicationService;
         }
 
-        public void Apply(Application application)
+        public bool Apply(Application application)
         {
+            if (!LoanWithinStaticThreshold(application.Value))
+            {
+                application.Decline();
+                _applicationService.Add(application);
+                return false;
+            }
 
+            return true;
+        }
+
+        private bool LoanWithinStaticThreshold(decimal amount)
+        {
+            return amount >= 100000 && amount <= 1500000;
+        }
+
+        private bool IsCreditValidByValue()
+        {
+            return false;
         }
     }
 }
